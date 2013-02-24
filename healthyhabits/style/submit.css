@@ -1,0 +1,31 @@
+div {
+	float: left;
+	display: inline-block;
+	white-space: nowrap;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+p {
+	font-size: 15.5;
+	margin: 0px;
+}
+
+.categories {
+	margin-top: 59px;
+}
+
+button {
+	margin-top: 300px;
+}
+
+form {
+	position: center;
+}
+
+body {
+	background-image:url('/style/check.png');
+	background-color:#FFFFFF;
+	background-position: right bottom;
+	background-repeat: no-repeat;
+}
