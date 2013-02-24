@@ -1,0 +1,37 @@
+<html>
+<head>
+	<title> Healthy Habits </title>
+	<link rel="stylesheet" type="text/css" href="/style/home.css" />
+</head>
+<body>
+	<h3> Hello, {{ uname }} </h3>
+	<p> Welcome to the Healthy Habits competition of the Hess family!</p>
+	
+	<table>
+		<tr>
+			<th> Name </th>
+			<th> Monday </th>
+			<th> Tuesday </th>
+			<th> Wednesday </th>
+			<th> Thursday </th>
+			<th> Friday </th>
+			<th> Saturday </th>
+			<th> Running Total </th>
+		</tr>
+		{% for user in users %}
+		<tr>
+			<td> {{ name }}	</td>
+			<td> {{ mon }} </td>
+			<td> {{ tue }} </td>
+			<td> {{ wed }} </td>
+			<td> {{ thur }} </td>
+			<td> {{ fri }} </td>
+			<td> {{ sat }} </td>
+			<td> {{ total }} </td>
+		</tr>
+		{% endfor %}
+	</table>
+			
+	<button type = "submit" value = "Submit">Submit</button>
+</body>
+</html>
