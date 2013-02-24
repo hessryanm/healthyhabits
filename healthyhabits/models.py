@@ -20,11 +20,10 @@ class DayRecord(db.Model):
   junkFood = db.BooleanProperty(default=False)
   relax = db.BooleanProperty(default=False)
   water = db.BooleanProperty(default=False)
-  total = db.IntegerProperty()
+  total = db.IntegerProperty(default=0)
 
 class WeekRecord(db.Model):
-  start = db.DateProperty()
-  end = db.DateProperty()
+  week = db.IntegerProperty()
   user = db.ReferenceProperty(UserRecord)
   mon = db.ReferenceProperty(DayRecord, collection_name="mon")
   tues = db.ReferenceProperty(DayRecord, collection_name="tues")
@@ -32,4 +31,3 @@ class WeekRecord(db.Model):
   thurs = db.ReferenceProperty(DayRecord, collection_name="thurs")
   fri = db.ReferenceProperty(DayRecord, collection_name="fri")
   sat = db.ReferenceProperty(DayRecord, collection_name="sat")
-
