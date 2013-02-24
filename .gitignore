@@ -1,1 +1,2 @@
-healtyhabits/*.pyc
+*.pyc
+.DS_STORE

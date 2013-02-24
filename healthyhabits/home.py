@@ -22,9 +22,8 @@ class MainPage(webapp2.RequestHandler):
     for p in q.run():
       person = {}
       person['name'] = p.name
-      print(datetime.datetime.now().date())
-      week = WeekRecord.gql("WHERE start < :1 AND end > :1", datetime.datetime.now().date())
-      week = week.get()
+      # week = WeekRecord.gql("WHERE start < :1 AND end > :1", datetime.datetime.now().date())
+      # week = week.get()
     self.response.headers['Content-Type'] = 'text/html'
     self.response.out.write(template.render("templates/home.html", {'uname': user.name}))
     
