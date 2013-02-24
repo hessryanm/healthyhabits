@@ -7,9 +7,9 @@ from models import *
 class MainPage(webapp2.RequestHandler):
   def get(self):
     google_user = users.get_current_user()
-    user = User.gql("WHERE user_id IS :1 LIMIT 1", google_user.user_id())
+    #user = User.gql("WHERE user_id IS :1 LIMIT 1", google_user.user_id())
     self.response.headers['Content-Type'] = 'text/html'
-    self.response.out.write(template.render("templates/home.html", {'id': user.user_id(), 'uname': user.nickname()}))
+    self.response.out.write(template.render("templates/home.html", {'id': google_user.user_id(), 'uname': google_user.nickname()}))
     
 class SubmitPage(webapp2.RequestHandler):
   def get(self):

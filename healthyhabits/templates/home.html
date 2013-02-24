@@ -2,21 +2,29 @@
 <head>
 	<title> Healthy Habits </title>
 	<link rel="stylesheet" type="text/css" href="/style/home.css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="/js/leader.js" type="text/javascript"></script>
 </head>
 <body>
-	<h3> Hello, {{ uname }} </h3>
+	<h2> Hello, {{ uname }}! </h2>
 	<p> Welcome to the Healthy Habits competition of the Hess family!</p>
+	</br>
+	
+	<b><div> Current Leader: <span class="winning"></span> </div></b>
+		
+	</br>
+	</br>
 	
 	<table>
 		<tr>
-			<th> Name </th>
-			<th> Monday </th>
-			<th> Tuesday </th>
-			<th> Wednesday </th>
-			<th> Thursday </th>
-			<th> Friday </th>
-			<th> Saturday </th>
-			<th> Running Total </th>
+			<th>  Name </th>
+			<th>  Monday </th>
+			<th>  Tuesday </th>
+			<th>  Wednesday </th>
+			<th>  Thursday </th>
+			<th>  Friday </th>
+			<th>  Saturday </th>
+			<th>  Running Total </th>
 		</tr>
 		{% for user in users %}
 		<tr>
@@ -27,11 +35,13 @@
 			<td> {{ thur }} </td>
 			<td> {{ fri }} </td>
 			<td> {{ sat }} </td>
-			<td> {{ total }} </td>
+			<td class = "total"> {{ total }} </td>
 		</tr>
 		{% endfor %}
 	</table>
+	</br>
+	</br>
 			
-	<button type = "submit" value = "Submit">Submit</button>
+	<button type = "submit" value = "Submit">Submit Your Habits</button>
 </body>
 </html>

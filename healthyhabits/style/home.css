@@ -2,10 +2,19 @@ table, th, td {
 	border: 1px solid black;
 }
 
+th, td {
+	padding: 5px;
+	
+}
+
+
 table{
 	border-collapse: collapse;
 }
 
 body {
-	background-color: #b0c4de;
+	background-image:url('/style/homeimg.jpg');
+	background-color:#FFFFFF;
+	background-position: right bottom;
+	background-repeat: no-repeat;
 }
