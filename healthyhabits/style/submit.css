@@ -29,3 +29,7 @@ body {
 	background-position: right bottom;
 	background-repeat: no-repeat;
 }
+
+.day{
+	text-align:center;
+}
