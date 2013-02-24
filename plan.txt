@@ -1,0 +1,7 @@
+1.	Show results for week/day for everyone that has logged
+		Button to enter results
+		Show username
+		Button to pick winner
+2.	Page to enter results for the day
+		Checkboxes
+		submit button
