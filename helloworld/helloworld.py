@@ -7,11 +7,8 @@ class MainPage(webapp2.RequestHandler):
   def get(self):
     user = users.get_current_user();
     
-    if user:
-      self.response.headers['Content-Type'] = 'text/html'
-      self.response.out.write(template.render("templates/home.html", {'lname': "Hess", 'uname': user.nickname()}))
-    else:
-      self.redirect(users.create_login_url(self.request.uri));
+    self.response.headers['Content-Type'] = 'text/html'
+    self.response.out.write(template.render("templates/home.html", {'lname': "Hess", 'uname': user.nickname()}))
     
 app = webapp2.WSGIApplication([('/', MainPage)], debug=True)
     

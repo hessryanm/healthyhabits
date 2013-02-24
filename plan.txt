@@ -5,3 +5,6 @@
 2.	Page to enter results for the day
 		Checkboxes
 		submit button
+		
+		{% for user in users %}
+			{{ name }}
