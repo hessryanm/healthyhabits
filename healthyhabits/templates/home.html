@@ -4,7 +4,6 @@
 	<link rel="shortcut icon" href="/style/favi.ico" />
 	<link rel="stylesheet" type="text/css" href="/style/home.css" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<script src="/js/leader.js" type="text/javascript"></script>
 </head>
 <body>
 	<h2> Hello, {{ uname }}! </h2>
@@ -28,15 +27,15 @@
 			<th>  Running Total </th>
 		</tr>
 		{% for user in users %}
-		<tr>
-			<td> {{ name }}	</td>
-			<td> {{ mon }} </td>
-			<td> {{ tues }} </td>
-			<td> {{ wed }} </td>
-			<td> {{ thurs }} </td>
-			<td> {{ fri }} </td>
-			<td> {{ sat }} </td>
-			<td class = "total"> {{ total }} </td>
+		<tr class="person_info">
+			<td class="name"> {{ user.name }} </td>
+			<td class="number"> {{ user.mon }} </td>
+			<td class="number"> {{ user.tues }} </td>
+			<td class="number"> {{ user.wed }} </td>
+			<td class="number"> {{ user.thurs }} </td>
+			<td class="number"> {{ user.fri }} </td>
+			<td class="number"> {{ user.sat }} </td>
+			<td class = "total number"> {{ user.total }} </td>
 		</tr>
 		{% endfor %}
 	</table>
@@ -44,7 +43,11 @@
 	<br>
 			
 	<form>
-		<input type = "button" onClick = "parent.location='submit'" value = 'Submit'>
+		<input type = "button" onClick = "parent.location='submit'" value = 'Record'>
 	</form>
+	<input type="button" onClick="getRandomPerson()" value="Winner!" />
+	<div class="winner_box"></div>
+	<script src="/js/leader.js" type="text/javascript"></script>
+	<script src="/js/random.js" type="text/javascript"></script>
 </body>
 </html>

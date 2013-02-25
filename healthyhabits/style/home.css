@@ -7,6 +7,13 @@ th, td {
 	
 }
 
+.number{
+	text-align:center;
+}
+
+.total{
+	font-weight:bold;
+}
 
 table{
 	border-collapse: collapse;
@@ -17,4 +24,9 @@ body {
 	background-color:#FFFFFF;
 	background-position: right bottom;
 	background-repeat: no-repeat;
+}
+
+.winner_box{
+	font-size:150%;
+	border:1px solid red;
 }

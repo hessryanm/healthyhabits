@@ -35,6 +35,13 @@ def get_day_dict(current_week, day):
       'relax': day.relax,
       'water': day.water
     }
+    
+def get_day_total(current_week, day):
+  day = getattr(current_week, day)
+  if day is None:
+    return 0
+  else:
+    return day.total
 
 class MainPage(webapp2.RequestHandler):
   def get(self):
@@ -56,17 +63,25 @@ class MainPage(webapp2.RequestHandler):
       current_week.user = user
       current_week.put()
     
-    q = WeekRecord.gql("WHERE week = :1 ORDER BY user.name", week_num)
+    q = db.GqlQuery("SELECT * FROM WeekRecord WHERE week = :1", week_num)
     all_users = []
-    for p in q.run():
+    for p in q:
       person = {}
       person['name'] = p.user.name
-      person['mon'] = p.mon.total
-      person['tues'] = p.tues.total
-      person['wed'] = p.wed.total
-      person['thurs'] = p.thurs.total
-      person['fri'] = p.fri.total
-      person['sat'] = p.sat.total
+      total = 0
+      person['mon'] = get_day_total(p, 'mon')
+      total += person['mon']
+      person['tues'] = get_day_total(p, 'tues')
+      total += person['tues']
+      person['wed'] = get_day_total(p, 'wed')
+      total += person['wed']
+      person['thurs'] = get_day_total(p, 'thurs')
+      total += person['thurs']
+      person['fri'] = get_day_total(p, 'fri')
+      total += person['fri']
+      person['sat'] = get_day_total(p, 'sat')
+      total += person['sat']
+      person['total'] = total
       all_users.append(copy.copy(person))
       
     self.response.headers['Content-Type'] = 'text/html'
@@ -183,6 +198,7 @@ class SubmitPage(webapp2.RequestHandler):
     
     day.put()
     setattr(current_week, self.request.params['day'], day)
+    current_week.put()
     self.redirect("/")
     
 app = webapp2.WSGIApplication([
