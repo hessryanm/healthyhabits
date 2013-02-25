@@ -1,11 +1,12 @@
 <html>
 <head>
+	<link rel="shortcut icon" href="/style/favi.ico" />
 	<link rel="stylesheet" type="text/css" href="/style/submit.css" />
 	<title> Submit </title>
 </head>
 <body>
 	<a href="/">Back To Home</a>
-	<h2> Submit Your Habits </h2>
+	<h2> Your Healthy Habits </h2>
 	<div class = 'categories'>
 		<p>In bed 7-9 hours last night</p>
 		<p>In bed by 11:00 PM, out by 8:00 AM</p>
@@ -22,34 +23,34 @@
 		<h3> Monday </h3>
 		<form action method = "POST">
 			<input type="checkbox" name="sleepAmount" value="true"
-			{% if thurs.sleepAmount %} checked="checked" {% endif %}
+			{% if mon.sleepAmount %} checked="checked" {% endif %}
 			/><br>
 			<input type="checkbox" name="sleepTimes" value="true"
-			{% if thurs.sleepTimes %} checked="checked" {% endif %}
+			{% if mon.sleepTimes %} checked="checked" {% endif %}
 			/><br>
 			<input type="checkbox" name="nap" value="true"
-			{% if thurs.nap %} checked="checked" {% endif %}
+			{% if mon.nap %} checked="checked" {% endif %}
 			/><br>
 			<input type="checkbox" name="exercise" value="true"
-			{% if thurs.exercise %} checked="checked" {% endif %}
+			{% if mon.exercise %} checked="checked" {% endif %}
 			/><br>
 			<input type="checkbox" name="veggies" value="true"
-			{% if thurs.veggies %} checked="checked" {% endif %}
+			{% if mon.veggies %} checked="checked" {% endif %}
 			/><br>
 			<input type="checkbox" name="healthyMeals" value="true"
-			{% if thurs.healthyMeals %} checked="checked" {% endif %}
+			{% if mon.healthyMeals %} checked="checked" {% endif %}
 			/><br>
 			<input type="checkbox" name="mealTimes" value="true"
-			{% if thurs.mealTimes %} checked="checked" {% endif %}
+			{% if mon.mealTimes %} checked="checked" {% endif %}
 			/><br>
 			<input type="checkbox" name="junkFood" value="true"
-			{% if thurs.junkFood %} checked="checked" {% endif %}
+			{% if mon.junkFood %} checked="checked" {% endif %}
 			/><br>
 			<input type="checkbox" name="relax" value="true"
-			{% if thurs.relax %} checked="checked" {% endif %}
+			{% if mon.relax %} checked="checked" {% endif %}
 			/><br>
 			<input type="checkbox" name="water" value="true"
-			{% if thurs.water %} checked="checked" {% endif %}
+			{% if mon.water %} checked="checked" {% endif %}
 			/><br>
 			<input type="hidden" name="day" value="mon" /><br>
 			<br>
