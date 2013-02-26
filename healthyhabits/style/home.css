@@ -7,15 +7,19 @@ th, td {
 	
 }
 
-.number{
+a {
+	text-decoration: none;
+}
+
+.number {
 	text-align:center;
 }
 
-.total{
+.total {
 	font-weight:bold;
 }
 
-table{
+table {
 	border-collapse: collapse;
 }
 
@@ -26,10 +30,23 @@ body {
 	background-repeat: no-repeat;
 }
 
-.winner_box{
+.winner_box {
 	font-size:150%;
 	border: 0px double #00FF00;
 	width: auto;
 	display: inline-block;
 	background-color: #00FF00;
+}
+
+.new_name_button {
+	display:inline-block;
+	margin-left:10px;
+}
+
+#change_name {
+	font-size:50%;
+}
+
+#welcome_message {
+	display:inline-block;
 }

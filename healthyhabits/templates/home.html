@@ -6,7 +6,10 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
-	<h2> Hello, {{ uname }}! </h2>
+	<h2 id="welcome_message"> Hello, <span id="uname">{{ uname }}</span>! </h2>
+	<div class="new_name_button">
+		<input type="button" id="change_name" value="Change Name" />
+	</div>
 	<p> Welcome to the Healthy Habits competition of the Hess family!</p>
 	<br>
 	
@@ -42,14 +45,15 @@
 	<br>
 	<br>
 			
-	<form>
-		<input type = "button" onClick = "parent.location='submit'" value = 'Record'>
-	</form>
+	<a href="/submit">
+		<input type = "button" value = 'Record'>
+	</a><br/><br/>
 	<input type="button" onClick="getRandomPerson()" value="Winner!" />
 	<br>
 	<br>
 	<div class="winner_box"></div>
 	<script src="/js/leader.js" type="text/javascript"></script>
 	<script src="/js/random.js" type="text/javascript"></script>
+	<script src="/js/home.js" type="text/javascript"></script>
 </body>
 </html>

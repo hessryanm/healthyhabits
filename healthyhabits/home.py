@@ -6,6 +6,7 @@ from google.appengine.api import users
 from models import *
 import datetime
 import copy
+import json
 
 def get_day_dict(current_week, day):
   day = getattr(current_week, day)
@@ -86,6 +87,25 @@ class MainPage(webapp2.RequestHandler):
       
     self.response.headers['Content-Type'] = 'text/html'
     self.response.out.write(template.render("templates/home.html", {'uname': user.name, 'users': all_users}))
+    
+  def post(self):
+    google_user = users.get_current_user()
+    user = UserRecord.gql("WHERE user_id = :1", google_user.user_id())
+    user = user.get()
+    
+    if user is None:
+      
+      user = UserRecord()
+      user.user_id = google_user.user_id()
+      user.name = google_user.nickname()
+      user.put()
+      
+    if "name" in self.request.params:
+      user.name = self.request.params['name']
+      user.put()
+    
+    self.response.headers['Content-Type'] = 'application/json'
+    self.response.out.write(json.dumps(dict(result="true")))
     
 class SubmitPage(webapp2.RequestHandler):
   def get(self):
