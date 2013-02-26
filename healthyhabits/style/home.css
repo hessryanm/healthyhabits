@@ -28,5 +28,8 @@ body {
 
 .winner_box{
 	font-size:150%;
-	border:1px solid red;
+	border: 0px double #00FF00;
+	width: auto;
+	display: inline-block;
+	background-color: #00FF00;
 }
