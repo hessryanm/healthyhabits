@@ -56,6 +56,10 @@ class MainPage(webapp2.RequestHandler):
       user.put()
       
     week_num = datetime.datetime.now().isocalendar()[1]
+    this_week = week_num
+    if 'week' in self.request.params and self.request.params['week'] != "":
+      week_num = int(self.request.params['week'])
+      
     current_week = WeekRecord.gql("WHERE week = :1 AND user = :2", week_num, user)
     current_week = current_week.get()
     if current_week is None:
@@ -86,7 +90,8 @@ class MainPage(webapp2.RequestHandler):
       all_users.append(copy.copy(person))
       
     self.response.headers['Content-Type'] = 'text/html'
-    self.response.out.write(template.render("templates/home.html", {'uname': user.name, 'users': all_users}))
+    prev_week = week_num - 1
+    self.response.out.write(template.render("templates/home.html", {'uname': user.name, 'users': all_users, 'logout_url':users.create_logout_url("/"), 'prev_week_num':prev_week, 'this_week':this_week == week_num}))
     
   def post(self):
     google_user = users.get_current_user()

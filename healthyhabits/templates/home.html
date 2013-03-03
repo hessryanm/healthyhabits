@@ -6,10 +6,19 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
+	<a href="/?week={{ prev_week_num }}"><- Previous Week</a>
+	{% if not this_week %}
+	 || <a href="/">This Week -></a>
+	{% endif %}
+	<br/>
 	<h2 id="welcome_message"> Hello, <span id="uname">{{ uname }}</span>! </h2>
 	<div class="new_name_button">
 		<input type="button" id="change_name" value="Change Name" />
 	</div>
+	<br/>
+	<a href="{{ logout_url }}">
+		<input type="button" value="Log Out" />
+	</a>
 	<p> Welcome to the Healthy Habits competition of the Hess family!</p>
 	<br>
 	
