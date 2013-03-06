@@ -6,7 +6,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
-	<a href="/?week={{ prev_week_num }}"><- Previous Week</a>
+	<a href="/?week={{ prev_week_num }}&year={{ prev_year_num }}"><- Previous Week</a>
 	{% if not this_week %}
 	 || <a href="/">This Week -></a>
 	{% endif %}
@@ -54,7 +54,7 @@
 	<br>
 	<br>
 			
-	<a href="/submit">
+	<a href="/submit?{{ queries }}">
 		<input type = "button" value = 'Record'>
 	</a><br/><br/>
 	<input type="button" onClick="getRandomPerson()" value="Winner!" />

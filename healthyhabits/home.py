@@ -7,6 +7,7 @@ from models import *
 import datetime
 import copy
 import json
+from timezone import USTimeZone
 
 def get_day_dict(current_week, day):
   day = getattr(current_week, day)
@@ -43,32 +44,69 @@ def get_day_total(current_week, day):
     return 0
   else:
     return day.total
-
-class MainPage(webapp2.RequestHandler):
-  def get(self):
-    google_user = users.get_current_user()
-    user = UserRecord.gql("WHERE user_id = :1", google_user.user_id())
-    user = user.get()
-    if user is None:
-      user = UserRecord()
-      user.user_id = google_user.user_id()
-      user.name = google_user.nickname()
-      user.put()
-      
-    week_num = datetime.datetime.now().isocalendar()[1]
-    this_week = week_num
-    if 'week' in self.request.params and self.request.params['week'] != "":
-      week_num = int(self.request.params['week'])
-      
-    current_week = WeekRecord.gql("WHERE week = :1 AND user = :2", week_num, user)
+    
+def get_date(request):
+  mountain = USTimeZone(-7, "Mountain", "MST", "MDT")
+  time = datetime.datetime.now(mountain)
+  iso = time.isocalendar()
+  date = {}
+  date['week_num'] = iso[1]
+  date['year'] = iso[0]
+  date['now'] = True
+  date['day'] = iso[2]
+  
+  if 'week' in request.params and request.params['week'] != "":
+    date['week_num'] = int(request.params['week'])
+    date['now'] = False
+    
+  if 'year' in request.params and request.params['year'] != "":
+    date['year'] = int(request.params['year'])
+    date['now'] = False
+    
+  return date
+  
+def get_user():
+  google_user = users.get_current_user()
+  user = UserRecord.gql("WHERE user_id = :1", google_user.user_id())
+  user = user.get()
+  if user is None:
+    user = UserRecord()
+    user.user_id = google_user.user_id()
+    user.name = google_user.nickname()
+    user.put()
+  return user  
+  
+def get_current_week(date, user):
+  current_week = WeekRecord.gql("WHERE week = :1 AND year = :2 AND user = :3", date['week_num'], date['year'], user)
+  current_week = current_week.get()
+  
+  if current_week is None:
+    current_week = WeekRecord.gql("WHERE week = :1 AND user = :2", date['week_num'], user)
     current_week = current_week.get()
-    if current_week is None:
+    
+    if current_week is not None:
+      current_week.year = date['year']
+      current_week.put()
+      
+    else:
       current_week = WeekRecord()
-      current_week.week = week_num
+      current_week.week = date['week_num']
+      current_week.year = date['year']
       current_week.user = user
       current_week.put()
     
-    q = db.GqlQuery("SELECT * FROM WeekRecord WHERE week = :1", week_num)
+  return current_week
+
+class MainPage(webapp2.RequestHandler):
+  def get(self):
+    
+    user = get_user()
+      
+    date = get_date(self.request)
+    
+    current_week = get_current_week(date, user)
+    
+    q = db.GqlQuery("SELECT * FROM WeekRecord WHERE week = :1 AND year=:2", date['week_num'], date['year'])
     all_users = []
     for p in q:
       person = {}
@@ -89,21 +127,21 @@ class MainPage(webapp2.RequestHandler):
       person['total'] = total
       all_users.append(copy.copy(person))
       
+      if p.year is None:
+        p.year = date['year']
+        p.put()
+      
     self.response.headers['Content-Type'] = 'text/html'
-    prev_week = week_num - 1
-    self.response.out.write(template.render("templates/home.html", {'uname': user.name, 'users': all_users, 'logout_url':users.create_logout_url("/"), 'prev_week_num':prev_week, 'this_week':this_week == week_num}))
+    prev_week = date['week_num'] - 1
+    if prev_week <= 0:
+      prev_week = 52
+      prev_year = date['year'] - 1
+    else:
+      prev_year = date['year']
+    self.response.out.write(template.render("templates/home.html", {'uname': user.name, 'users': all_users, 'logout_url':users.create_logout_url("/"), 'prev_week_num':prev_week, 'prev_year_num':prev_year, 'this_week':date['now'], 'queries': self.request.query_string}))
     
   def post(self):
-    google_user = users.get_current_user()
-    user = UserRecord.gql("WHERE user_id = :1", google_user.user_id())
-    user = user.get()
-    
-    if user is None:
-      
-      user = UserRecord()
-      user.user_id = google_user.user_id()
-      user.name = google_user.nickname()
-      user.put()
+    user = get_user()
       
     if "name" in self.request.params:
       user.name = self.request.params['name']
@@ -114,23 +152,11 @@ class MainPage(webapp2.RequestHandler):
     
 class SubmitPage(webapp2.RequestHandler):
   def get(self):
-    google_user = users.get_current_user()
-    user = UserRecord.gql("WHERE user_id = :1", google_user.user_id())
-    user = user.get()
-    if user is None:
-      user = UserRecord()
-      user.user_id = google_user.user_id()
-      user.name = google_user.nickname()
-      user.put()
+    user = get_user()
       
-    week_num = datetime.datetime.now().isocalendar()[1]
-    current_week = WeekRecord.gql("WHERE week = :1 AND user = :2", week_num, user)
-    current_week = current_week.get()
-    if current_week is None:
-      current_week = WeekRecord()
-      current_week.week = week_num
-      current_week.user = user
-      current_week.put()
+    date = get_date(self.request)
+    
+    current_week = get_current_week(date, user)
       
     data = {}
     data['mon'] = get_day_dict(current_week, 'mon')
@@ -139,33 +165,21 @@ class SubmitPage(webapp2.RequestHandler):
     data['thurs'] = get_day_dict(current_week, 'thurs')
     data['fri'] = get_day_dict(current_week, 'fri')
     data['sat'] = get_day_dict(current_week, 'sat')
+    data['this_week'] = date['now']
+    data['day_num'] = date['day']
     
     self.response.out.write(template.render("templates/submit.html", data))
     
   def post(self):
-    google_user = users.get_current_user()
-    user = UserRecord.gql("WHERE user_id = :1", google_user.user_id())
-    user = user.get()
-    if user is None:
-      user = UserRecord()
-      user.user_id = google_user.user_id()
-      user.name = google_user.nickname()
-      user.put()
+    user = get_user()
       
-    week_num = datetime.datetime.now().isocalendar()[1]
-    current_week = WeekRecord.gql("WHERE week = :1 AND user = :2", week_num, user)
-    current_week = current_week.get()
-    if current_week is None:
-      current_week = WeekRecord()
-      current_week.week = week_num
-      current_week.user = user
-      current_week.put()
+    date = get_date(self.request)
+    
+    current_week = get_current_week(date, user)
       
     day = getattr(current_week, self.request.params['day'])
     if day is None:
       day = DayRecord()
-      # setattr(current_week, self.request.params['day'], db.Key(day.key())
-      # current_week.put()
     
     total = 0
     if 'sleepAmount' in self.request.params:
@@ -224,10 +238,9 @@ class SubmitPage(webapp2.RequestHandler):
     day.put()
     setattr(current_week, self.request.params['day'], day)
     current_week.put()
-    self.redirect("/")
+    self.redirect("/?"+self.request.query_string)
     
 app = webapp2.WSGIApplication([
   ('/', MainPage), 
   ('/submit', SubmitPage)], 
 debug=True)
-    

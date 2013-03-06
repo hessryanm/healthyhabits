@@ -24,6 +24,7 @@ class DayRecord(db.Model):
 
 class WeekRecord(db.Model):
   week = db.IntegerProperty()
+  year = db.IntegerProperty()
   user = db.ReferenceProperty(UserRecord)
   mon = db.ReferenceProperty(DayRecord, collection_name="mon")
   tues = db.ReferenceProperty(DayRecord, collection_name="tues")
